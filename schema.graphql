@@ -1,0 +1,26 @@
+type Query {
+	info: String!
+	postings: [Posting!]!
+}
+
+type Mutation {
+	addPosting(
+		coach: String!
+		title: String!
+		industry: String!
+		location: String!
+		price: Int!
+		description: String!
+	): Posting!
+}
+
+type Posting {
+	id: ID!
+	coach: String!
+	title: String!
+	industry: String!
+	location: String!
+	# rating: Int!
+	price: Int!
+	description: String!
+}

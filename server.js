@@ -1,11 +1,12 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { prisma } = require('./generated/prisma-client');
 
+const Query = require('./resolvers/Query');
+// const Mutation = require('./resolvers/Mutation');
+
 const resolvers = {
-	Query: {
-		info: () =>
-			`yoga-prisma-03 is a practice API using graphql-yoga and Prisma!`,
-	},
+	Query,
+	// Mutation,
 };
 
 const server = new GraphQLServer({
@@ -14,12 +15,4 @@ const server = new GraphQLServer({
 	context: { prisma },
 });
 
-const options = {
-	port: process.env.PORT || 4000,
-};
-
-server.start(options, ({ port }) =>
-	console.log(
-		`\n** Server started, listening on port ${port} for incoming requests **\n`,
-	),
-);
+module.exports = server;

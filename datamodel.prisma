@@ -2,3 +2,14 @@ type User {
   id: ID! @id
   name: String!
 }
+
+type Posting {
+	id: ID! @id
+	coach: String!
+	title: String!
+	industry: String!
+	location: String!
+	price: Int!
+	description: String!
+  createdAt: DateTime! @createdAt
+}
