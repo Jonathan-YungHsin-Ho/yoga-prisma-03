@@ -12,6 +12,8 @@ type Mutation {
 		price: Int!
 		description: String!
 	): Posting!
+
+	deletePosting(id: String!): Posting!
 }
 
 type Posting {
