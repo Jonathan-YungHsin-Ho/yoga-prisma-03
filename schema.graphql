@@ -2,6 +2,7 @@ type Query {
 	info: String!
 	postings: [Posting!]!
 	industries: [Industry!]
+	tags: [Tag!]
 }
 
 type Mutation {
@@ -33,15 +34,28 @@ type Posting {
 	id: ID!
 	coach: String!
 	title: String!
-	industry: Industry!
 	location: String!
-	# rating: Int!
 	price: Int!
 	description: String!
+	industry: Industry!
+	tags: [Tag]
+	ratings: [Rating]
 }
 
 type Industry {
 	id: ID!
 	name: String!
 	postings: [Posting!]
+}
+
+type Tag {
+	id: ID!
+	name: String!
+	postings: [Posting!]
+}
+
+type Rating {
+	id: ID!
+	number: Int!
+	posting: Posting!
 }

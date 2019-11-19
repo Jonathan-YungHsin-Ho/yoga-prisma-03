@@ -11,6 +11,10 @@ type AggregatePosting {
   count: Int!
 }
 
+type AggregateTag {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -166,6 +170,12 @@ type Mutation {
   upsertPosting(where: PostingWhereUniqueInput!, create: PostingCreateInput!, update: PostingUpdateInput!): Posting!
   deletePosting(where: PostingWhereUniqueInput!): Posting
   deleteManyPostings(where: PostingWhereInput): BatchPayload!
+  createTag(data: TagCreateInput!): Tag!
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
+  upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
+  deleteTag(where: TagWhereUniqueInput!): Tag
+  deleteManyTags(where: TagWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -216,6 +226,11 @@ input PostingCreateInput {
   location: String!
   price: Int!
   description: String!
+}
+
+input PostingCreateManyInput {
+  create: [PostingCreateInput!]
+  connect: [PostingWhereUniqueInput!]
 }
 
 input PostingCreateManyWithoutIndustryInput {
@@ -374,6 +389,15 @@ input PostingSubscriptionWhereInput {
   NOT: [PostingSubscriptionWhereInput!]
 }
 
+input PostingUpdateDataInput {
+  coach: String
+  title: String
+  industry: IndustryUpdateOneRequiredWithoutPostingsInput
+  location: String
+  price: Int
+  description: String
+}
+
 input PostingUpdateInput {
   coach: String
   title: String
@@ -389,6 +413,18 @@ input PostingUpdateManyDataInput {
   location: String
   price: Int
   description: String
+}
+
+input PostingUpdateManyInput {
+  create: [PostingCreateInput!]
+  update: [PostingUpdateWithWhereUniqueNestedInput!]
+  upsert: [PostingUpsertWithWhereUniqueNestedInput!]
+  delete: [PostingWhereUniqueInput!]
+  connect: [PostingWhereUniqueInput!]
+  set: [PostingWhereUniqueInput!]
+  disconnect: [PostingWhereUniqueInput!]
+  deleteMany: [PostingScalarWhereInput!]
+  updateMany: [PostingUpdateManyWithWhereNestedInput!]
 }
 
 input PostingUpdateManyMutationInput {
@@ -424,9 +460,20 @@ input PostingUpdateWithoutIndustryDataInput {
   description: String
 }
 
+input PostingUpdateWithWhereUniqueNestedInput {
+  where: PostingWhereUniqueInput!
+  data: PostingUpdateDataInput!
+}
+
 input PostingUpdateWithWhereUniqueWithoutIndustryInput {
   where: PostingWhereUniqueInput!
   data: PostingUpdateWithoutIndustryDataInput!
+}
+
+input PostingUpsertWithWhereUniqueNestedInput {
+  where: PostingWhereUniqueInput!
+  update: PostingUpdateDataInput!
+  create: PostingCreateInput!
 }
 
 input PostingUpsertWithWhereUniqueWithoutIndustryInput {
@@ -539,6 +586,9 @@ type Query {
   posting(where: PostingWhereUniqueInput!): Posting
   postings(where: PostingWhereInput, orderBy: PostingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Posting]!
   postingsConnection(where: PostingWhereInput, orderBy: PostingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostingConnection!
+  tag(where: TagWhereUniqueInput!): Tag
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
+  tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -548,7 +598,112 @@ type Query {
 type Subscription {
   industry(where: IndustrySubscriptionWhereInput): IndustrySubscriptionPayload
   posting(where: PostingSubscriptionWhereInput): PostingSubscriptionPayload
+  tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  postings(where: PostingWhereInput, orderBy: PostingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Posting!]
+}
+
+type TagConnection {
+  pageInfo: PageInfo!
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
+}
+
+input TagCreateInput {
+  id: ID
+  name: String!
+  postings: PostingCreateManyInput
+}
+
+type TagEdge {
+  node: Tag!
+  cursor: String!
+}
+
+enum TagOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type TagPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type TagSubscriptionPayload {
+  mutation: MutationType!
+  node: Tag
+  updatedFields: [String!]
+  previousValues: TagPreviousValues
+}
+
+input TagSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TagWhereInput
+  AND: [TagSubscriptionWhereInput!]
+  OR: [TagSubscriptionWhereInput!]
+  NOT: [TagSubscriptionWhereInput!]
+}
+
+input TagUpdateInput {
+  name: String
+  postings: PostingUpdateManyInput
+}
+
+input TagUpdateManyMutationInput {
+  name: String
+}
+
+input TagWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  postings_every: PostingWhereInput
+  postings_some: PostingWhereInput
+  postings_none: PostingWhereInput
+  AND: [TagWhereInput!]
+  OR: [TagWhereInput!]
+  NOT: [TagWhereInput!]
+}
+
+input TagWhereUniqueInput {
+  id: ID
+  name: String
 }
 
 type User {

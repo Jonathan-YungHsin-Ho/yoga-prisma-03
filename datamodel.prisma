@@ -19,3 +19,9 @@ type Industry {
 	name: String! @unique
 	postings: [Posting!]
 }
+
+type Tag {
+	id: ID! @id
+	name: String! @unique
+	postings: [Posting!]
+}
