@@ -1,6 +1,7 @@
 module.exports = {
 	info,
 	postings,
+	industries,
 };
 
 function info() {
@@ -9,4 +10,8 @@ function info() {
 
 function postings(_root, _args, context) {
 	return context.prisma.postings();
+}
+
+function industries(_root, _args, context) {
+	return context.prisma.industries();
 }

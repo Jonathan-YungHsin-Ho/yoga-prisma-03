@@ -1,0 +1,20 @@
+mutation {
+	createIndustry(data: { name: "Tech" }) {
+		id
+		name
+	}
+}
+
+mutation {
+	createIndustry(data: { name: "Design" }) {
+		id
+		name
+	}
+}
+
+mutation {
+	createIndustry(data: { name: "Agriculture" }) {
+		id
+		name
+	}
+}
