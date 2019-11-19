@@ -8,3 +8,4 @@ generate:
 
 seed:
   import: seed.graphql
+  # run: node seed.js
