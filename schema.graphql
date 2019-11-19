@@ -14,6 +14,16 @@ type Mutation {
 	): Posting!
 
 	deletePosting(id: String!): Posting!
+
+	updatePosting(
+		id: String!
+		coach: String
+		title: String
+		industry: String
+		location: String
+		price: Int
+		description: String
+	): Posting!
 }
 
 type Posting {
